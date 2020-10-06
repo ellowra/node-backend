@@ -44,5 +44,29 @@ router.post('/addtiming', async (req,res) => {
         
 });
 
+//Owner Delete timing
+router.delete('/deltiming', async (req,res) => {
+    const gcode_var = req.body.gcode;
+    const gExist = await Gym.find({
+        gcode:gcode_var,
+    }).countDocuments();
+    if(gExist==1){
+        try{
+            await Timing.remove({
+                gcode: gcode_var,
+                stime:req.body.stime
+            });
+            res.send("1");  // Deleted
+        }
+        catch(err){
+            console.log(err);
+    
+            res.send("-1");
+            //res.json({message:err});
+        }
+    }
+});
+
+
 
 module.exports =router;
